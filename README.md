@@ -1,0 +1,2 @@
+# Lattice Boltzmann model
+## Structure
