@@ -24,6 +24,9 @@ def input_check(self):
     
     if (self.L/self.res)%1 !=0 or (self.W/self.res)%1 != 0:
         exit('Choose width, height and res such that an integer ammount of points is generated.')
+        
+    if self.tau <= 1:
+        exit('Tau should be bigger then 1.')
 
 # -----------------------------------------------------------------------------------------------------------------------
 # Initialisation functions

@@ -48,7 +48,6 @@ def boundary_bounch(self, par):
         updated simulation density (n) parameters
     
     """    
-
     
     for i, j in self.bounch:
         
@@ -81,7 +80,6 @@ def eq_n(self, par):
         
     """
     par.n_eq = np.zeros(np.shape(par.n), dtype = float)
-    par.rho = np.sum(par.n, axis = 2) 
     
     c = self.c
     u = par.u
@@ -119,6 +117,8 @@ def velocity(self, par):
         
         par.u[:,:,k] = par.u[:,:,k]/par.norm_v
 
+    par.rho = np.sum(par.n, axis = 2) 
+    
     return par
 
 def forcing(self, par):    
@@ -139,7 +139,7 @@ def forcing(self, par):
         
     """
     
-    par.u[:,1:self.W_in,0] = par.u[:,1:self.W_in,0] + 0.1*self.c
+    par.u[:,1:self.W_in,0] = par.u[:,1:self.W_in,0] + self.dv*self.c
 
     return par 
 

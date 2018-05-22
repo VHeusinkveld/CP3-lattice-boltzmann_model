@@ -3,7 +3,6 @@ from sys import exit
 from types import SimpleNamespace
 import matplotlib.pyplot as plt
 
-
 #from constants import *
 from data_processing import *
 from functions import *
@@ -53,8 +52,7 @@ def boltzmann_sim(self):
         if counter == self.max_iterations:
             plot_boltzmann_lattice(self,par)
             #plot_velocity_profile(self,par)
-            print('Maximum number of iterations (' + str(counter) + ') have been reached. \
-            It is adviced to increase the maximum number of iterations or increase the error tolerance (epsilon).')
+            print('Maximum number of iterations (' + str(counter) + ') have been reached. It is adviced to increase the maximum number of iterations or increase the error tolerance (epsilon).')
             return par
             #break #only needed when nothing there is no return command
 
