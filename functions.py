@@ -24,7 +24,7 @@ def shift_n(self, par):
     
     for i in range(len(self.e)):
         
-        par.n[:,:,i] = np.roll(par.n[:,:,i], self.e[i], axis = [1, 0])
+        par.n[:,:,i] = np.roll(par.n[:,:,i], self.e[i], axis = [0, 1])
         
     return par
 
@@ -48,26 +48,19 @@ def boundary_bounch(self, par):
         updated simulation density (n) parameters
     
     """    
+
     
-    # To keep track of exchanged boundaries
-    exchanged = np.ones((len(self.e),), dtype = bool)
+    for i, j in self.bounch:
+        
+        # Select upper and lower boundary 
+        bd_1 = par.n[:,[0, self.W_in], i]
+        bd_2 = par.n[:,[0, self.W_in], j]  
+         
+        # Exchange densities accordingly 
+        par.n[:,[0, self.W_in], i] = bd_2
+        par.n[:,[0, self.W_in], j] = bd_1
     
-    for i in range(len(self.e)):
-        if exchanged[i]:
-            e_inv = -1 * self.e[i]
-            j = np.argwhere(np.sum(e_inv == self.e, axis = 1) == 2)[0]
-            
-            # Select upper and lower boundary 
-            bd_1 = par.n[:,[0, self.W_in], i]
-            bd_2 = par.n[:,[0, self.W_in], j]
-            
-            # Exchange densities accordingly 
-            par.n[:,[0, self.W_in], i] = bd_2
-            par.n[:,[0, self.W_in], j] = bd_1
-            
-            exchanged[i] = False
-            exchanged[j] = False
-            
+    
     return par 
 
 def eq_n(self, par):
@@ -88,11 +81,13 @@ def eq_n(self, par):
         
     """
     par.n_eq = np.zeros(np.shape(par.n), dtype = float)
-   
+    par.rho = np.sum(par.n, axis = 2) 
+    
     c = self.c
     u = par.u
  
     for i in range(len(self.e)):
+        
         par.n_eq[:,:,i] = self.w[i]*par.rho/self.m*(1 + (3/c**2)*np.dot(u, self.e[i]) +
                                                     (9/(2*c**4))*np.dot(u, self.e[i])**2 -
                                                     (3/(2*c**2))*np.sum((u * u), axis = 2))                      
@@ -115,21 +110,18 @@ def velocity(self, par):
         updated simulation velocity (u) and average density (rho) parameters
         
     """
-      
-    par.rho = np.tensordot(par.n, self.e_norm, axes = 1)
-    
-    par.u = np.tensordot(par.n, self.e, axes = 1)
+
+    par.norm_v = np.tensordot(par.n, self.e_norm, axes = 1)
+    par.u = np.tensordot(par.n, self.e, axes = 1)  
     
     # Try to remove this for loop
     for k in range(len(par.u[0,0,:])):
-
-        par.u[:,:,k] = par.u[:,:,k]/par.rho
+        
+        par.u[:,:,k] = par.u[:,:,k]/par.norm_v
 
     return par
 
-def forcing(self, par):
-    #incorrect still, not sure if this is a x or y forcing 
-    
+def forcing(self, par):    
     """ Changes the velocity according to the pressure gradient in the system
     
     Parameters
@@ -147,7 +139,7 @@ def forcing(self, par):
         
     """
     
-    par.u[:,:,1] = par.u[:,:,1] + 0.5*self.c #(Part of 0.5*self.c should be a relation with pressure instead. See ex. Ch. 14)
+    par.u[:,1:self.W_in,0] = par.u[:,1:self.W_in,0] + 0.1*self.c
 
     return par 
 

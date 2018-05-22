@@ -1,6 +1,8 @@
 import numpy as np
 from sys import exit 
 from types import SimpleNamespace
+from functions import forcing 
+from functions import eq_n
 
 # -----------------------------------------------------------------------------------------------------------------------
 # Input parameter checks
@@ -52,7 +54,12 @@ def initialization(self):
     self.grid_int_coord = np.meshgrid(range(self.L_n), range(self.W_n))
     
     # Density array
-    par.n = np.ones((self.L_n, self.W_n, len(self.e)), dtype = float)
-    par.n[:,[0, self.W_in],:] = 0
+    par.n = np.zeros((self.L_n, self.W_n, len(self.e)), dtype = float)
+    par.rho = np.ones ((self.L_n, self.W_n), dtype = float)
+    par.u = np.zeros((self.L_n, self.W_n, 2), dtype = float)
+    
+    par = forcing(self, par)  
+    par = eq_n(self, par)
+    par.n = par.n_eq
     
     return self, par

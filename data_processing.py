@@ -22,12 +22,12 @@ def plot_boltzmann_lattice(self, par):
     """
     
     plt.subplot(1, 2, 1)
-    plt.imshow(par.u[:, 1:self.W_in, 1])
+    plt.imshow(par.u[:, 1:self.W_in, 0])
     plt.xlabel('xlabel')
     plt.ylabel('ylabel')
     plt.colorbar()
     plt.subplot(1, 2, 2)
-    plt.imshow(abs(par.u[:, 1:self.W_in, 0]))
+    plt.imshow(par.u[:, 1:self.W_in, 1])
     plt.xlabel('xlabel')
     plt.ylabel('ylabel')
     plt.colorbar()
