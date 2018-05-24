@@ -53,14 +53,34 @@ def boundary_bounch(self, par):
         
         # Select upper and lower boundary 
         bd_1 = par.n[:,[0, self.W_in], i]
-        bd_2 = par.n[:,[0, self.W_in], j]  
-         
+        bd_2 = par.n[:,[0, self.W_in], j]      
+            
         # Exchange densities accordingly 
         par.n[:,[0, self.W_in], i] = bd_2
         par.n[:,[0, self.W_in], j] = bd_1
+        
+        # in progress for object 
+        #bd_3 = par.n[par.obs, i]
+        #bd_4 = par.n[par.obs, j] 
+        #par.n[par.obs, i] = bd_4
+        #par.n[par.obs, j] = bd_3
     
     
-    return par 
+    return par
+
+def obstruction(self, par):
+    """ WIP function concerning an object in the pipe.
+    
+    """
+    a = 4
+    b = 4
+
+    x = np.arange(30, 30 + int(self.L_in/a))
+    y = np.arange(10, 10 + int(self.W_in/b))
+    
+    par.obs = np.meshgrid(x, y)
+    
+    return par
 
 def eq_n(self, par):
     """ Determines the equilibrium densities for all directions in grid
@@ -112,11 +132,16 @@ def velocity(self, par):
     par.norm_v = np.tensordot(par.n, self.e_norm, axes = 1)
     par.u = np.tensordot(par.n, self.e, axes = 1)  
     
+    valid_rho = par.norm_v != 0
+    #invalid_rho = par.norm_v == 0
+    
     # Try to remove this for loop
     for k in range(len(par.u[0,0,:])):
         
-        par.u[:,:,k] = par.u[:,:,k]/par.norm_v
-
+        par.u[valid_rho,k] = par.u[valid_rho,k]/par.norm_v[valid_rho]
+     
+    par.v_tot.append(np.sum(abs(par.u))/(self.L*self.W))
+    
     par.rho = np.sum(par.n, axis = 2) 
     
     return par

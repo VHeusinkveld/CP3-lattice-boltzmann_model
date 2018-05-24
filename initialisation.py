@@ -3,6 +3,7 @@ from sys import exit
 from types import SimpleNamespace
 from functions import forcing 
 from functions import eq_n
+from functions import obstruction
 
 # -----------------------------------------------------------------------------------------------------------------------
 # Input parameter checks
@@ -25,8 +26,8 @@ def input_check(self):
     if (self.L/self.res)%1 !=0 or (self.W/self.res)%1 != 0:
         exit('Choose width, height and res such that an integer ammount of points is generated.')
         
-    if self.tau <= 1:
-        exit('Tau should be bigger then 1.')
+    #if self.tau <= 1:
+    #    exit('Tau should be bigger then 1.')
 
 # -----------------------------------------------------------------------------------------------------------------------
 # Initialisation functions
@@ -49,6 +50,7 @@ def initialization(self):
     
     # Simulation parameters 
     par = SimpleNamespace()
+    par.v_tot = []
     
     # Cartesian grid coordinates 
     self.grid_coord = np.meshgrid(np.linspace(0, self.L, self.L_n), np.linspace(0, self.W, self.W_n))
@@ -62,7 +64,15 @@ def initialization(self):
     par.u = np.zeros((self.L_n, self.W_n, 2), dtype = float)
     
     par = forcing(self, par)  
+    #par = obstruction(self, par) # Obstruction 
+    
     par = eq_n(self, par)
     par.n = par.n_eq
+    
+    #par.rho[par.obs] = 0
+    #par.rho[:,[0, self.W_in]] = 0
+    
+    #par.n[par.obs] = 0
+    #par.n[:,[0, self.W_in]] = 0
     
     return self, par
