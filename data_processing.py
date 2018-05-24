@@ -20,9 +20,11 @@ def plot_boltzmann_lattice(self, par):
     plots of system (UPDATE THIS DESCRIPTION!!!!!!!)
         
     """
-    
+    data_x = par.u[:, 1:self.W_in, 0]
+    data_x[par.obs_x, par.obs_y] = 0
+
     plt.subplot(1, 2, 1)
-    plt.imshow(par.u[:, 1:self.W_in, 0])
+    plt.imshow(data_x)
     plt.xlabel('xlabel')
     plt.ylabel('ylabel')
     plt.colorbar()

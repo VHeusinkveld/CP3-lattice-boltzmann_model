@@ -41,7 +41,7 @@ def boltzmann_sim(self):
             #plot_velocity_profile(self,par)
         par, equilibrium = is_stable(self, par)
         
-        if counter%1000 == 0:
+        if counter%self.plot_iteration == 0:
             plot_boltzmann_lattice(self, par)
         if equilibrium:
             plot_boltzmann_lattice(self,par)

@@ -27,7 +27,7 @@ def input_check(self):
         exit('Choose width, height and res such that an integer ammount of points is generated.')
         
     #if self.tau <= 1:
-    #    exit('Tau should be bigger then 1.')
+        #exit('Tau should be bigger then 1.')
 
 # -----------------------------------------------------------------------------------------------------------------------
 # Initialisation functions
@@ -63,16 +63,16 @@ def initialization(self):
     par.rho = np.ones ((self.L_n, self.W_n), dtype = float)
     par.u = np.zeros((self.L_n, self.W_n, 2), dtype = float)
     
+    par = obstruction(self, par) # Obstruction 
     par = forcing(self, par)  
-    #par = obstruction(self, par) # Obstruction 
-    
+        
     par = eq_n(self, par)
     par.n = par.n_eq
     
-    #par.rho[par.obs] = 0
-    #par.rho[:,[0, self.W_in]] = 0
+    par.rho[par.obs_int_x, par.obs_int_y] = 0
+    par.rho[:,[0, self.W_in]] = 0
     
-    #par.n[par.obs] = 0
-    #par.n[:,[0, self.W_in]] = 0
+    par.n[par.obs_int_x, par.obs_int_y,:] = 0
+    par.n[:,[0, self.W_in]] = 0
     
     return self, par
