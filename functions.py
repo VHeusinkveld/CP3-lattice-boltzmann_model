@@ -73,7 +73,7 @@ def obstruction(self, par):
     
     """
    
-    x_start = int(self.L_in/2 - 1/2*self.L_in*self.L_ratio)
+    x_start = int(self.L_in/4 - 1/2*self.L_in*self.L_ratio)
     y_start = int(self.W_in/2 - 1/2*self.W_in*self.W_ratio)
     
     x = np.arange(x_start, x_start + int(self.L_in*self.L_ratio))
