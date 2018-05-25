@@ -54,7 +54,7 @@ def boltzmann_sim(self):
             #plot_velocity_profile(self,par)
             print('Maximum number of iterations (' + str(counter) + ') have been reached. It is adviced to increase the maximum number of iterations or increase the error tolerance (epsilon).')
             return par
-            #break #only needed when nothing there is no return command
+            #break #only needed when there is no return command
 
 def is_stable(self, par):
     '''Determines whether system is in equilibrium or not by calculating the differences
