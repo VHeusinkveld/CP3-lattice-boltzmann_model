@@ -199,3 +199,30 @@ def relax_n(self, par):
     par.n = (1 - 1/self.tau)*par.n + par.n_eq/self.tau
     
     return par
+
+def Re_pipe(self, par):
+    Re = np.mean(par.u[:,:,0])*self.W/self.nu
+    
+    return Re
+
+def Reynolds(self, par):
+    Reynolds_pipe = Re_pipe(self, par)
+    print('----------------------------')
+    print('Reynolds_pipe = ' +str(Reynolds_pipe))
+    
+    if self.L_ratio !=0:
+        Reynolds_obs = Re_obs(sim, par)
+        print('Reynolds_obs = ' +str(Reynolds_obs))
+        
+    else:
+        Reynolds_obs = np.nan
+        
+    return Reynolds_pipe, Reynolds_obs
+
+# -----------------------------------------------------------------------------------------------------------------------
+# Under development
+# -----------------------------------------------------------------------------------------------------------------------
+
+def Re_obs(self, par):
+    Re = np.mean(par.u[0:(par.obs_x[0]-5), par.obs_y, 0])*(self.W_ratio*self.W)/self.nu
+    return Re

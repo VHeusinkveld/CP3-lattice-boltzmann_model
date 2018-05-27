@@ -25,13 +25,13 @@ def plot_boltzmann_lattice(self, par):
 
     plt.subplot(1, 2, 1)
     plt.imshow(data_x)
-    plt.xlabel('xlabel')
-    plt.ylabel('ylabel')
+    plt.xlabel('ylabel')
+    plt.ylabel('xlabel')
     plt.colorbar()
     plt.subplot(1, 2, 2)
     plt.imshow(par.u[:, 1:self.W_in, 1])
-    plt.xlabel('xlabel')
-    plt.ylabel('ylabel')
+    plt.xlabel('ylabel')
+    plt.ylabel('xlabel')
     plt.colorbar()
     plt.show()
     
@@ -51,7 +51,7 @@ def plot_velocity_profile(self, par):
         
     """
     #x_axis = np.arange(self.W_in)
-    plt.plot(par.u[0,1:self.W_in,1])
+    plt.plot(par.u[0,1:self.W_in,0])
     plt.xlabel('Width')
     plt.ylabel('Velocity')
     plt.title('Velocity profile at t = ...')
