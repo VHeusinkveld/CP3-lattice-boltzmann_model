@@ -60,10 +60,11 @@ def boundary_bounch(self, par):
         par.n[:,[0, self.W_in], j] = bd_1
         
         # in progress for object 
-        bd_3 = par.n[par.obs_x, par.obs_y, i]
-        bd_4 = par.n[par.obs_x, par.obs_y, j] 
-        par.n[par.obs_x, par.obs_y, i] = bd_4
-        par.n[par.obs_x, par.obs_y, j] = bd_3
+        if self.obs:
+            bd_3 = par.n[par.obs_x, par.obs_y, i]
+            bd_4 = par.n[par.obs_x, par.obs_y, j] 
+            par.n[par.obs_x, par.obs_y, i] = bd_4
+            par.n[par.obs_x, par.obs_y, j] = bd_3
     
     
     return par
@@ -148,9 +149,10 @@ def velocity(self, par):
         
         par.u[valid_rho,k] = par.u[valid_rho,k]/par.norm_v[valid_rho]
     
-    par.u[par.obs_int_x, par.obs_int_y,:] = 0
+    if self.obs:
+        par.u[par.obs_int_x, par.obs_int_y,:] = 0
+        
     par.v_tot.append(np.sum(abs(par.u))/(self.L*self.W))
-    
     par.rho = np.sum(par.n, axis = 2) 
     
     return par
@@ -174,7 +176,9 @@ def forcing(self, par):
     """
     
     par.u[:,1:self.W_in,0] = par.u[:,1:self.W_in,0] + self.dv*self.c
-    par.u[par.obs_x, par.obs_y, 0] += -self.dv*self.c
+    
+    if self.obs:
+        par.u[par.obs_x, par.obs_y, 0] += -self.dv*self.c
     
     return par 
 
@@ -200,18 +204,16 @@ def relax_n(self, par):
     
     return par
 
-def Re_pipe(self, par):
-    Re = np.mean(par.u[:,:,0])*self.W/self.nu
-    
-    return Re
+def Re_pipe(self, par):   
+    return np.mean(par.u[:,:,0])*self.W/self.nu
 
 def Reynolds(self, par):
     Reynolds_pipe = Re_pipe(self, par)
     print('----------------------------')
     print('Reynolds_pipe = ' +str(Reynolds_pipe))
     
-    if self.L_ratio !=0:
-        Reynolds_obs = Re_obs(sim, par)
+    if self.obs:
+        Reynolds_obs = Re_obs(self, par)
         print('Reynolds_obs = ' +str(Reynolds_obs))
         
     else:
@@ -224,5 +226,5 @@ def Reynolds(self, par):
 # -----------------------------------------------------------------------------------------------------------------------
 
 def Re_obs(self, par):
-    Re = np.mean(par.u[0:(par.obs_x[0]-5), par.obs_y, 0])*(self.W_ratio*self.W)/self.nu
-    return Re
+    return np.mean(par.u[0:(par.obs_x[0]-5), par.obs_y, 0])*(self.W_ratio*self.W)/self.nu
+

@@ -63,16 +63,18 @@ def initialization(self):
     par.rho = np.ones ((self.L_n, self.W_n), dtype = float)
     par.u = np.zeros((self.L_n, self.W_n, 2), dtype = float)
     
-    par = obstruction(self, par) # Obstruction 
-    par = forcing(self, par)  
-        
+    if self.obs:
+        par = obstruction(self, par) # Obstruction 
+    
+    par = forcing(self, par)    
     par = eq_n(self, par)
     par.n = par.n_eq
     
-    par.rho[par.obs_int_x, par.obs_int_y] = 0
-    par.rho[:,[0, self.W_in]] = 0
+    if self.obs:
+        par.rho[par.obs_int_x, par.obs_int_y] = 0
+        par.n[par.obs_int_x, par.obs_int_y,:] = 0
     
-    par.n[par.obs_int_x, par.obs_int_y,:] = 0
+    par.rho[:,[0, self.W_in]] = 0
     par.n[:,[0, self.W_in]] = 0
     
     return self, par

@@ -21,7 +21,9 @@ def plot_boltzmann_lattice(self, par):
         
     """
     data_x = par.u[:, 1:self.W_in, 0]
-    data_x[par.obs_x, par.obs_y] = 0
+    
+    if self.obs:
+        data_x[par.obs_x, par.obs_y] = 0
 
     plt.subplot(1, 2, 1)
     plt.imshow(data_x)
