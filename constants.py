@@ -5,6 +5,19 @@ import numpy as np
 from types import SimpleNamespace
 
 def constants(self):
+    """ Sets the system constants based on the set system parameters
+    
+    Parameters
+    ----------
+    self : NameSpace
+        set simulation constants
+        
+    Returns
+    -------
+    self : NameSpace
+        updated simulation constants
+        
+    """
     # Resolutions
     self.res = 1 # Space resolution
     self.dt = 1 # Time resolution
