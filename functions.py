@@ -168,6 +168,7 @@ def velocity(self, par):
     # Store velocity and density     
     par.v_tot.append(np.sum(abs(par.u))/(self.L*self.W))
     par.rho_tot.append(np.sum(par.rho)/(self.L*self.W))
+    par.kin_tot.append(np.sum(np.sum(par.u * par.u, axis = 2) * par.rho)/(self.L*self.W))
     
     return par
 
