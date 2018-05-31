@@ -26,25 +26,26 @@ def plot_boltzmann_lattice(self, par):
         
     """
     plot_markup()
-    
-    plt.subplot(1, 3, 1)
+    fig = plt.figure(figsize=(8, 20))
+    fig.add_subplot(1, 3, 1)
     plt.imshow(par.rho)
     #plt.xlabel('ylabel')
     #plt.ylabel('xlabel')
     plt.title('rho')
-    plt.colorbar()
-    plt.subplot(1, 3, 2)
+    #plt.colorbar()
+    fig.add_subplot(1, 3, 2)
     plt.imshow(par.u[:, 1:self.W_in, 0])
     #plt.xlabel('ylabel')
     #plt.ylabel('xlabel')
-    plt.title('vy')
+    plt.title('$v_y$')
     plt.colorbar()
-    plt.subplot(1, 3, 3)
+    fig.add_subplot(1, 3, 3)
     plt.imshow(par.u[:, 1:self.W_in, 1])
     #plt.xlabel('ylabel')
     #plt.ylabel('xlabel')
-    plt.title('vx')
+    plt.title('$v_x$')
     plt.colorbar()
+    plt.tight_layout()
     plt.show()
     
 def plot_velocity_profile(self, par):
