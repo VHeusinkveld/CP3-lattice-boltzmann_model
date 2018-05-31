@@ -50,9 +50,8 @@ def boundary_bounch(self, par):
     """    
     par.n[:,(0,-1),1:] = np.roll(par.n[:,(0,-1),1:], 4, axis = 2)
     
-    if self.obs == 'square':
-        par.n[par.obs_int_x, par.obs_int_y, 1:] = np.roll(par.n[par.obs_int_x, par.obs_int_y, 1:], 4, axis = 2)
-    else:
+    if self.obs != 'none':
+        
         par.n[par.indices,1:] = np.roll(par.n[par.indices,1:], 4, axis = 1)
     
     return par
@@ -62,27 +61,18 @@ def obstruction(self, par):
     
     """
     if self.obs == 'square':
-        x_start = int(self.L_in/4 - 1/2*self.L_in*self.L_ratio)
-        y_start = int(self.W_in/2 - 1/2*self.W_in*self.W_ratio)
+        R = self.R
+        cx, cy = int(self.L/4), int(self.W/2)
 
-        x = np.arange(x_start, x_start + int(self.L_in*self.L_ratio))
-        y = np.arange(y_start, y_start + int(self.W_in*self.W_ratio))
+        X,Y = np.meshgrid(np.linspace(0, self.L, self.L_n), np.linspace(0, self.W, self.W_n))
+        grid = np.stack((X,Y), axis = -1)
+        grid[:,:,0] -= cx
+        grid[:,:,1] -= cy
 
-        par.obs = np.meshgrid(x, y)
-        par.obs_x = np.reshape(par.obs[0],(-1,))
-        par.obs_y = np.reshape(par.obs[1],(-1,))
-
-        x_int = np.arange(x_start + 1, x_start - 1 + int(self.L_in*self.L_ratio))
-        y_int = np.arange(y_start + 1, y_start - 1 + int(self.W_in*self.W_ratio))
-
-        par.obs_int = np.meshgrid(x_int, y_int)
-        par.obs_int_x = np.reshape(par.obs_int[0],(-1,))
-        par.obs_int_y = np.reshape(par.obs_int[1],(-1,))
-
-    
+        par.indices = np.transpose(abs(grid[:,:,0]) + abs(grid[:,:,1]) <= R)
+            
     elif self.obs == 'cylinder':
-        R = int(1/16*min(self.L,self.W))
-        par.R = R
+        R = self.R
         cx, cy = int(self.L/4), int(self.W/2)
 
         X,Y = np.meshgrid(np.linspace(0, self.L, self.L_n), np.linspace(0, self.W, self.W_n))
@@ -146,17 +136,14 @@ def velocity(self, par):
     
     valid_rho = par.rho != 0
     
-    for k in range(len(par.u[0,0,:])):
-        
+    for k in range(len(par.u[0,0,:])):    
         par.u[valid_rho,k] = par.u[valid_rho,k]/par.rho[valid_rho]
     
-    if self.obs == 'square':
-        par.u[par.obs_int_x, par.obs_int_y,:] = 0
-    else:
+    if self.obs != 'none':
         par.u[par.indices,:] = 0
         
     par.v_tot.append(np.sum(abs(par.u))/(self.L*self.W))
-    par.rho = np.sum(par.n, axis = 2) 
+    par.rho_tot.append(np.sum(par.rho)/(self.L*self.W))
     
     return par
 
@@ -180,9 +167,7 @@ def forcing(self, par):
     
     par.u[:,1:self.W_in,0] = par.u[:,1:self.W_in,0] + self.dv*self.c
     
-    if self.obs == 'square':
-        par.u[par.obs_x, par.obs_y, 0] -= self.dv*self.c
-    else:
+    if self.obs != 'none':
         par.u[par.indices, 0] -= self.dv*self.c
     
     return par 

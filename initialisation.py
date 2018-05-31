@@ -50,7 +50,11 @@ def initialization(self):
     
     # Simulation parameters 
     par = SimpleNamespace()
+    
+    # Keeping track of conservation of quantities
     par.v_tot = []
+    par.rho_tot = []
+    par.kin_tot = []
     
     # Cartesian grid coordinates 
     self.grid_coord = np.meshgrid(np.linspace(0, self.L, self.L_n), np.linspace(0, self.W, self.W_n))
@@ -63,21 +67,18 @@ def initialization(self):
     par.rho = np.ones ((self.L_n, self.W_n), dtype = float)
     par.u = np.zeros((self.L_n, self.W_n, 2), dtype = float)
     
+    # Adds obstruction 
     if self.obs:
-        par = obstruction(self, par) # Obstruction 
+        par = obstruction(self, par) 
     
+    # Initial conditions 
     par = forcing(self, par)    
     par = eq_n(self, par)
     par.n = par.n_eq
     
-    if self.obs:
-        if self.obs == 'square':
-            par.rho[par.obs_int_x, par.obs_int_y] = 0
-            par.n[par.obs_int_x, par.obs_int_y,:] = 0
-            
-        else:
-            par.rho[par.indices] = 0
-            par.n[par.indices] = 0
+    if self.obs != 'none':
+        par.rho[par.indices] = 0
+        par.n[par.indices] = 0
     
     par.rho[:,[0, self.W_in]] = 0
     par.n[:,[0, self.W_in]] = 0
