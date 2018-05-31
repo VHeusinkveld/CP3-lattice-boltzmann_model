@@ -32,7 +32,7 @@ def plot_boltzmann_lattice(self, par, counter):
     #fmt = FormatScalarFormatter("%.2f")
     
     fig.add_subplot(1, 3, 1)
-    plt.imshow(par.rho)
+    plt.imshow(par.rho[:, 1:self.W_in])
     plt.title(r'$\rho$')
     plt.xlabel('W')
     plt.ylabel('L')
