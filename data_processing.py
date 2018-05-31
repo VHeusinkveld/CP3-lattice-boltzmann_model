@@ -24,16 +24,24 @@ def plot_boltzmann_lattice(self, par):
     
     if self.obs:
         data_x[par.obs_x, par.obs_y] = 0
-
-    plt.subplot(1, 2, 1)
+    
+    plt.subplot(1, 3, 1)
+    plt.imshow(par.rho)
+    plt.xlabel('ylabel')
+    plt.ylabel('xlabel')
+    plt.title('rho')
+    plt.colorbar()
+    plt.subplot(1, 3, 2)
     plt.imshow(data_x)
     plt.xlabel('ylabel')
-    plt.ylabel('xlabel')
+    #plt.ylabel('xlabel')
+    plt.title('vy')
     plt.colorbar()
-    plt.subplot(1, 2, 2)
+    plt.subplot(1, 3, 3)
     plt.imshow(par.u[:, 1:self.W_in, 1])
     plt.xlabel('ylabel')
-    plt.ylabel('xlabel')
+    #plt.ylabel('xlabel')
+    plt.title('vx')
     plt.colorbar()
     plt.show()
     

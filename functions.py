@@ -48,7 +48,8 @@ def boundary_bounch(self, par):
         updated simulation density (n) parameters
     
     """    
-    
+    par.n[:,(0,-1),1:] = np.roll(par.n[:,(0,-1),1:], 4, axis = 2)
+    '''
     for i, j in self.bounch:
         
         # Select upper and lower boundary 
@@ -65,7 +66,7 @@ def boundary_bounch(self, par):
             bd_4 = par.n[par.obs_x, par.obs_y, j] 
             par.n[par.obs_x, par.obs_y, i] = bd_4
             par.n[par.obs_x, par.obs_y, j] = bd_3
-    
+    '''
     
     return par
 
