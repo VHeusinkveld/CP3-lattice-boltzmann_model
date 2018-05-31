@@ -22,8 +22,10 @@ def plot_boltzmann_lattice(self, par):
     """
     data_x = par.u[:, 1:self.W_in, 0]
     
-    if self.obs:
+    if self.obs == 'square':
         data_x[par.obs_x, par.obs_y] = 0
+    #else:
+     #   data_x[par.indices] = 0
     
     plt.subplot(1, 3, 1)
     plt.imshow(par.rho)

@@ -71,8 +71,13 @@ def initialization(self):
     par.n = par.n_eq
     
     if self.obs:
-        par.rho[par.obs_int_x, par.obs_int_y] = 0
-        par.n[par.obs_int_x, par.obs_int_y,:] = 0
+        if self.obs == 'square':
+            par.rho[par.obs_int_x, par.obs_int_y] = 0
+            par.n[par.obs_int_x, par.obs_int_y,:] = 0
+            
+        else:
+            par.rho[par.indices] = 0
+            par.n[par.indices] = 0
     
     par.rho[:,[0, self.W_in]] = 0
     par.n[:,[0, self.W_in]] = 0
