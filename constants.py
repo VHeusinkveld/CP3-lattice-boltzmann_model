@@ -27,10 +27,11 @@ def constants(self):
     self.L_n,  self.W_n  = self.L_in + 1, self.W_in + 1
 
     # Weights and direction vectors
-    self.w = np.array([4, 1/4, 1, 1/4, 1, 1/4, 1, 1/4, 1])/9
+    #self.w = np.array([    4,   1/4,     1,   1/4,      1,    1/4,       1,    1/4,      1])/9 # Jos vectors
+    self.w = np.array([    4,     1,   1/4,     1,    1/4,      1,     1/4,      1,    1/4])/9  # Online source
     self.e = np.array([[0,0], [1,0], [1,1], [0,1], [-1,1], [-1,0], [-1,-1], [0,-1], [1,-1]])
     self.e_norm = np.sum(abs(self.e), axis = 1)
-    #self.e_norm = np.ones(np.shape(self.e_norm)) #to set the norm to 1
+    self.e_norm = np.ones(np.shape(self.e_norm)) #to set the norm to 1
     self.bounch = np.array([[1,5], [2,6], [3,7], [4,8]])
 
     self.c = self.res/self.dt 
