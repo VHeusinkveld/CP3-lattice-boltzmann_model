@@ -103,8 +103,6 @@ def simulation_step(self, par):
     par = shift_n(self, par)
     par = velocity(self, par)
     par = boundary_bounch(self, par)
-    
-    #par = velocity_2(self, par)
     par = forcing(self, par)
     par = eq_n(self, par)
     par = relax_n(self, par)

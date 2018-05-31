@@ -141,14 +141,14 @@ def velocity(self, par):
         
     """
 
-    par.norm_v = np.tensordot(par.n, self.e_norm, axes = 1)
+    par.rho = np.sum(par.n, axis = 2)#np.tensordot(par.n, self.e_norm, axes = 1)
     par.u = np.tensordot(par.n, self.e, axes = 1)  
     
-    valid_rho = par.norm_v != 0
+    valid_rho = par.rho != 0
     
     for k in range(len(par.u[0,0,:])):
         
-        par.u[valid_rho,k] = par.u[valid_rho,k]/par.norm_v[valid_rho]
+        par.u[valid_rho,k] = par.u[valid_rho,k]/par.rho[valid_rho]
     
     if self.obs:
         par.u[par.obs_int_x, par.obs_int_y,:] = 0
