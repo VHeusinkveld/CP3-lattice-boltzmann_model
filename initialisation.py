@@ -10,12 +10,14 @@ from functions import obstruction
 # -----------------------------------------------------------------------------------------------------------------------
 
 def input_check(self):
-    """ Checks imput constants and gives an error when width, height or res have wrong values
-    
+    """ Checks imput constants and gives an error when 
+        - Width, height or res have wrong values. 
+        - The relaxation time is shorter then a simulation time step.
+        
     Parameters
     ----------
     self : NameSpace
-        simulation constants 
+        simulation constants/properties 
         
     Returns
     -------
@@ -34,7 +36,10 @@ def input_check(self):
 # -----------------------------------------------------------------------------------------------------------------------
 
 def initialization(self):
-    """ Initializes arrays. 
+    """ Initializes arrays to initial conditions. 
+    Density n is set to the equilibrium density, n_eq.
+    Borders and obstacles are initialised with 0 denisty .
+    Velocity u starts at 0 but a forcing is applied once in the y direction.
     
     Parameters
     ----------
@@ -43,8 +48,28 @@ def initialization(self):
         
     Returns
     -------
-    par : NameSpace
-        containing initialized parameter arrays
+    self : NameSpace
+        updated : 
+        grid : 2D array (length, width)
+            contains grid coordinates 
+        obs : 2D array (length, width)
+            contains obstacle coordinates
+    
+    par : NameSpace 
+        
+        updated :
+        
+        v_tot : list
+            to keep track of speeds
+        rho_tot : list
+            to keep track of density
+        kin_tot : list
+            to keep track of kinetic energy   
+        n : 3D array (length, width, 9)
+            initialisation of the densities for the nine lattice vectors 
+        u : 3D array (length, width, 2)
+            x and y speed for every lattice point 
+    
     
     """
     

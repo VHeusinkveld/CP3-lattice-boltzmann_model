@@ -98,6 +98,7 @@ def simulation_step(self, par):
     -------
     par : NameSpace
         containing updated parameter arrays
+        u, rho, n, n_eq
         
     '''
     

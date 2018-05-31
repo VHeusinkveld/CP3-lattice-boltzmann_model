@@ -17,9 +17,10 @@ def shift_n(self, par):
     Returns
     -------
     par : NameSpace
-        containing parameter arrays and
-        updated simulation density (n) parameters
-    
+        updated :
+         n : 3D array (length, width, 9)
+             shifted denisty array according to lattice vector 
+             
     """
     
     for i in range(len(self.e)):
@@ -29,9 +30,7 @@ def shift_n(self, par):
     return par
 
 def boundary_bounch(self, par):
-    """
-    
-    Takes the upper boundary and the lower boundary of a certain density vector. 
+    """ Takes the upper boundary, lower boundary and possible obstacle of a certain density vector. 
     Mirrors this vector and assigns the density accordingly. 
     
     Parameters
@@ -44,22 +43,41 @@ def boundary_bounch(self, par):
     Returns
     -------
     par : NameSpace
-        containing parameter arrays and
-        updated simulation density (n) parameters
+        updated :
+        n : 3D array (length, width, 9)
+            inverse directions for denisties in the boundary
     
-    """    
+    """  
+    
     par.n[:,(0,-1),1:] = np.roll(par.n[:,(0,-1),1:], 4, axis = 2)
     
     if self.obs != 'none':
-        
         par.n[par.indices,1:] = np.roll(par.n[par.indices,1:], 4, axis = 1)
     
     return par
 
 def obstruction(self, par):
-    """ WIP function concerning an object in the pipe.
+    """ Determines the weighted velocities for all directions for every grid point
     
+    Parameters
+    ----------
+    self : NameSpace
+        simulation constants
+        obs : Str
+            can be none, square or circle 
+    par : NameSpace
+        containing parameter arrays
+        
+    Returns
+    -------
+    par : NameSpace
+        updated : 
+        indices : 2D array
+            contains the indices/coordinates of the obstacle
+
+        
     """
+
     if self.obs == 'square':
         R = self.R
         cx, cy = int(self.L/4), int(self.W/2)
@@ -97,8 +115,9 @@ def eq_n(self, par):
     Returns
     -------
     par : NameSpace
-        containing parameter arrays and
-        updated simulation equilibrium density (n_eq) and velocity (u) parameters
+        updated : 
+        n_eq : 3D array (length, width, 9)
+            contains new equilibrium distribution based on speed and density
         
     """
     par.n_eq = np.zeros(np.shape(par.n), dtype = float)
@@ -126,12 +145,16 @@ def velocity(self, par):
     Returns
     -------
     par : NameSpace
-        containing parameter arrays and
-        updated simulation velocity (u) and average density (rho) parameters
+        updated : 
+        rho : 2D array (length, width)
+            density at every grid point
+        u : 3D array (length, width, 2)
+            velocity for grid point in x [:,:,1] and y [:,:,0] direction
+            weighted by density
         
     """
 
-    par.rho = np.sum(par.n, axis = 2)#np.tensordot(par.n, self.e_norm, axes = 1)
+    par.rho = np.sum(par.n, axis = 2)
     par.u = np.tensordot(par.n, self.e, axes = 1)  
     
     valid_rho = par.rho != 0
@@ -142,6 +165,7 @@ def velocity(self, par):
     if self.obs != 'none':
         par.u[par.indices,:] = 0
         
+    # Store velocity and density     
     par.v_tot.append(np.sum(abs(par.u))/(self.L*self.W))
     par.rho_tot.append(np.sum(par.rho)/(self.L*self.W))
     
@@ -160,8 +184,9 @@ def forcing(self, par):
     Returns
     -------
     par : NameSpace
-        containing parameter arrays and
-        updated simulation velocity (u) parameters
+        upated : 
+        u : 3D array (length, width, 2)
+            added forcing in the y direction [:,:,0]
         
     """
     
@@ -185,8 +210,10 @@ def relax_n(self, par):
     Returns
     -------
     par : NameSpace
-        containing parameter arrays and
-        updated simulation density (n) parameters
+        updated :
+        n : 3D array (lenth, width, 9)
+            denisty relaxed to equilibrium denisty based on 
+            relaxation time. 
         
     """
      
