@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 # -----------------------------------------------------------------------------------------------------------------------
 # Plot functions
 # -----------------------------------------------------------------------------------------------------------------------
-  
+      
 def plot_markup():
     """ 
     Markup for the plots, sets font and enables LaTeX.
@@ -14,7 +14,7 @@ def plot_markup():
     plt.rc('font', family='serif')
     plt.rc('font', size=18)
 
-def plot_boltzmann_lattice(self, par):
+def plot_boltzmann_lattice(self, par, counter):
     """ Plot of 2D boltzman lattice with velocity profile over entire lattice in x and y direction.
     Also the density is plotted 
     
@@ -29,22 +29,31 @@ def plot_boltzmann_lattice(self, par):
     
     plot_markup()
     fig = plt.figure(figsize=(8, 20))
+    #fmt = FormatScalarFormatter("%.2f")
     
     fig.add_subplot(1, 3, 1)
     plt.imshow(par.rho)
-    plt.title('rho')
+    plt.title(r'$\rho$')
+    plt.xlabel('W')
+    plt.ylabel('L')
+    plt.colorbar()
     
     fig.add_subplot(1, 3, 2)
     plt.imshow(par.u[:, 1:self.W_in, 0])
     plt.title('$v_y$')
-    plt.colorbar()
+    plt.xlabel('W')
+    plt.colorbar(format = '%.2f')
     
     fig.add_subplot(1, 3, 3)
     plt.imshow(par.u[:, 1:self.W_in, 1])
     plt.title('$v_x$')
+    plt.xlabel('W')
     plt.colorbar()
     
     plt.tight_layout()
+    if self.save:
+        plt.savefig(self.fig_dir + 'colour_' + str(counter))
+        print('Fig. colour plots ' + str(counter) + ' is saved to' + self.fig_dir )
     plt.show()
     
 def plot_velocity_profile(self, par):
@@ -70,7 +79,7 @@ def plot_velocity_profile(self, par):
         y = y - min(y) + min(data_slice)
         plt.plot(x, y, '--', label = 'Theoretical')
         plt.xlabel('x')
-        plt.ylabel('v_y')
+        plt.ylabel('$v_y$')
         plt.legend()
         plt.tight_layout()
         if self.save:

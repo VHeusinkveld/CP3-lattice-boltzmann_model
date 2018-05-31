@@ -229,7 +229,7 @@ def Reynolds(self, par):
     print('----------------------------')
     print('Reynolds_pipe = ' +str(Reynolds_pipe))
     
-    if self.obs:
+    if self.obs != 'none':
         Reynolds_obs = Re_obs(self, par)
         print('Reynolds_obs = ' +str(Reynolds_obs))
         
@@ -243,5 +243,6 @@ def Reynolds(self, par):
 # -----------------------------------------------------------------------------------------------------------------------
 
 def Re_obs(self, par):
-    return np.mean(par.u[0:(par.obs_x[0]-5), par.obs_y, 0])*(self.W_ratio*self.W)/self.nu
+    if self.obs == 'square':
+        return np.mean(par.u[0:(par.obs_x[0]-5), par.obs_y, 0])*(self.W_ratio*self.W)/self.nu
 

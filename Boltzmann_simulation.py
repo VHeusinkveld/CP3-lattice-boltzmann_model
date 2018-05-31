@@ -37,19 +37,19 @@ def boltzmann_sim(self):
         simulation_step(self, par)
         if counter == 1:
             par.u_reference = par.u*0 # used for equilibrium determination (Need array of same dimensions)
-            plot_boltzmann_lattice(self, par)
+            plot_boltzmann_lattice(self, par, counter)
         par, equilibrium = is_stable(self, par)
         
         if counter%self.plot_iteration == 0:
-            plot_boltzmann_lattice(self, par)
+            plot_boltzmann_lattice(self, par, counter)
         if equilibrium:
-            plot_boltzmann_lattice(self,par)
+            plot_boltzmann_lattice(self,par, counter)
             plot_velocity_profile(self, par)
             print('Equilibrium has been reached after ' + str(counter) + ' iterations.')
             return par
             
         if counter == self.max_iterations:
-            plot_boltzmann_lattice(self,par)
+            plot_boltzmann_lattice(self,par, counter)
             plot_velocity_profile(self, par)
             print('Maximum number of iterations (' + str(counter) + ') have been reached. It is adviced to increase the maximum number of iterations or increase the error tolerance (epsilon).')
             return par
