@@ -32,7 +32,7 @@ def plot_boltzmann_lattice(self, par, counter):
     #fmt = FormatScalarFormatter("%.2f")
     
     fig.add_subplot(1, 3, 1)
-    plt.imshow(par.rho[:, 1:self.W_in])
+    plt.imshow(par.rho)
     plt.title(r'$\rho$')
     plt.xlabel('W')
     plt.ylabel('L')
@@ -52,7 +52,7 @@ def plot_boltzmann_lattice(self, par, counter):
     
     plt.tight_layout()
     if self.save:
-        plt.savefig(self.fig_dir + 'colour_' + str(counter))
+        plt.savefig(self.fig_dir + 'L_' + str(self.L) + '_W_' + str(self.W) + 'colour_' + self.obs + '_' + 'It_' + str(counter))
         print('Fig. colour plots ' + str(counter) + ' is saved to' + self.fig_dir )
     plt.show()
     
