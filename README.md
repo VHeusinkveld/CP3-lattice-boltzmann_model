@@ -3,8 +3,8 @@
 *figures*:
 Folder containing the output figures
 
-*images*:
-Folder containing report images
+*images_and_animations*:
+Folder containing report images and animations
 
 *Animation.ipynb*: 
 Contains setup of an animation.
