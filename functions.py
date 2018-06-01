@@ -222,28 +222,21 @@ def relax_n(self, par):
     
     return par
 
-def Re_pipe(self, par):   
-    return np.mean(par.u[:,:,0])*self.W/self.nu
-
 def Reynolds(self, par):
-    Reynolds_pipe = Re_pipe(self, par)
-    print('----------------------------')
-    print('Reynolds_pipe = ' +str(Reynolds_pipe))
+    """ Determines the Reynolds number in the system
     
-    if self.obs != 'none':
-        Reynolds_obs = Re_obs(self, par)
-        print('Reynolds_obs = ' +str(Reynolds_obs))
+    Parameters
+    ----------
+    self : NameSpace
+        simulation constants
+    par : NameSpace
+        containing parameter arrays
         
-    else:
-        Reynolds_obs = np.nan
+    Returns
+    -------
+    Re : Float
+        Reynolds number of flow in pipe 
         
-    return Reynolds_pipe, Reynolds_obs
-
-# -----------------------------------------------------------------------------------------------------------------------
-# Under development
-# -----------------------------------------------------------------------------------------------------------------------
-
-def Re_obs(self, par):
-    if self.obs == 'square':
-        return np.mean(par.u[0:(par.obs_x[0]-5), par.obs_y, 0])*(self.W_ratio*self.W)/self.nu
-
+    """
+    Re = np.mean(par.u[:,:,0])*self.W/self.nu
+    return Re

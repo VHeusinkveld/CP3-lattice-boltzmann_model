@@ -29,8 +29,7 @@ def plot_boltzmann_lattice(self, par, counter):
     
     plot_markup()
     fig = plt.figure(figsize=(8, 20))
-    #fmt = FormatScalarFormatter("%.2f")
-    
+        
     fig.add_subplot(1, 3, 1)
     plt.imshow(par.rho)
     plt.title(r'$\rho$')
