@@ -19,6 +19,9 @@ simulation is needed to be performed.
 *Report.ipynb*: 
 Small report containing explanation of the code, alorithm and results.
 
+*Report_lattice_boltzmann.pdf*
+PDF version of the notebook, in case of incorrect rendering on gitlab.
+
 *data_processing.py*:
 Contains simple plotting functions.
 
